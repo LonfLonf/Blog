@@ -2,6 +2,28 @@
 <html>
   <head>
     {% block head %}
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page_title or "LonfLonf Blog" }}</title>
+    <meta
+      name="description"
+      content="{{ page_description or 'Write-ups, CTFs, tech notes, and random thoughts from LonfLonf.' }}"
+    />
+    <link rel="canonical" href="{{ request.url }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="{{ page_title or 'LonfLonf Blog' }}" />
+    <meta
+      property="og:description"
+      content="{{ page_description or 'Write-ups, CTFs, tech notes, and random thoughts from LonfLonf.' }}"
+    />
+    <meta property="og:url" content="{{ request.url }}" />
+    <meta property="og:site_name" content="LonfLonf Blog" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="{{ page_title or 'LonfLonf Blog' }}" />
+    <meta
+      name="twitter:description"
+      content="{{ page_description or 'Write-ups, CTFs, tech notes, and random thoughts from LonfLonf.' }}"
+    />
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
