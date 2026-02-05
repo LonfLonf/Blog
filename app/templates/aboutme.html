@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+    <title>About Me - LonfLonf</title>
+  </head>
+
+  <body class="body">
+    <main class="about-hero">
+      <div class="about-card">
+        <img
+          class="about-avatar"
+          src="{{ url_for('static', filename='/images/hacker.png') }}"
+          alt="LonfLonf Icon"
+        />
+        <h1>Hello, my name is <span class="rotating-font">LonfLonf</span></h1>
+        <p class="about-lead">
+          I'm a 20-year-old Computer Science student. My favorite hobbies are
+          hacking (CTF) and reading books.
+        </p>
+        <p class="about-body">
+          This blog is like my world - a place to share write-ups, CTFs,
+          interesting things, and random thoughts.
+        </p>
+        <a class="about-cta" href="{{ url_for('blog') }}">Go to Home Page</a>
+      </div>
+    </main>
+  </body>
+</html>

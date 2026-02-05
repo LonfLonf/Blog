@@ -1,0 +1,499 @@
+:root {
+  --bg: #15161a;
+  --surface: #1c1f24;
+  --surface-2: #22262c;
+  --border: #31363d;
+  --text: #e9edf2;
+  --muted: #b2bac6;
+  --accent: #9dc1ff;
+  --accent-2: #b7d0ff;
+  --success: #0f6b3a;
+  --warning: #8b6f00;
+  --danger: #8a1c1c;
+}
+
+@font-face {
+  font-family: "DepartureMono Nerd";
+  src: url("fonts/DepartureMonoNerdFont-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Gohu Nerd";
+  src: url("fonts/GohuFont14NerdFont-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Meslo Nerd";
+  src: url("fonts/MesloLGLNerdFont-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "ProggyClean Nerd";
+  src: url("fonts/ProggyCleanNerdFont-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Terminess Nerd";
+  src: url("fonts/TerminessNerdFont-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.body {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  background-color: var(--surface) !important;
+  margin-bottom: 12px !important;
+  padding: 4px 0;
+}
+
+.header .navbar {
+  background-color: transparent !important;
+  padding: 8px 0;
+  min-height: 56px;
+  align-items: center;
+}
+
+.header .navbar,
+.header .container,
+.header .container-fluid {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.header .navbar-collapse {
+  width: 100%;
+}
+
+.header .d-flex.ml-auto {
+  margin-left: auto !important;
+}
+
+.header .navbar-brand,
+.header .nav-link {
+  color: var(--text) !important;
+}
+
+.header .navbar-brand {
+  padding: 0;
+  font-size: 1.08rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+}
+
+.header .navbar-toggler {
+  padding: 4px 6px;
+  border-color: var(--border);
+}
+
+.header .navbar-brand img {
+  width: 28px;
+  height: 28px;
+}
+
+.header .navbar-nav {
+  align-items: center;
+}
+
+.header .nav-link {
+  padding: 6px 10px;
+  line-height: 1.1;
+}
+
+.header .nav-link:hover,
+.header .nav-link:focus,
+.header .navbar-brand:hover,
+.header .navbar-brand:focus {
+  color: var(--accent) !important;
+}
+
+.header .dropdown-menu {
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+}
+
+.header .dropdown-item {
+  color: var(--text);
+}
+
+.header .dropdown-item:hover,
+.header .dropdown-item:focus {
+  background-color: #2a3038;
+  color: var(--accent);
+}
+
+.header .form-control {
+  background-color: #1a1f26;
+  border: 1px solid var(--border);
+  color: var(--text);
+  height: 36px;
+  padding: 6px 10px;
+  font-size: 0.95rem;
+}
+
+.header .form-control::placeholder {
+  color: var(--muted);
+}
+
+.header .btn-outline-success {
+  border-color: var(--border);
+  color: var(--text);
+  height: 36px;
+  padding: 6px 12px;
+  font-size: 0.95rem;
+}
+
+.header .btn-outline-success:hover,
+.header .btn-outline-success:focus {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #0b0f1a;
+}
+
+.content {
+  margin-bottom: 16px;
+  margin-top: 12px;
+  background-color: var(--surface-2) !important;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  padding: 18px 20px;
+}
+
+.content h1 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.content h1 a:hover,
+.content h1 a:focus {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer {
+  width: 100%;
+  background-color: var(--surface) !important;
+  color: var(--muted);
+  padding: 16px 0;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  margin-top: auto;
+}
+
+.footer .footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer .socials {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer .social-link {
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+}
+
+.footer .social-link:hover,
+.footer .social-link:focus {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.footer .social-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background-color: #1a1f26;
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.footer .social-link:hover .social-icon,
+.footer .social-link:focus .social-icon {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.about-hero {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.about-card {
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 28px;
+  border-radius: 12px;
+  max-width: 680px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.about-avatar {
+  width: 86px;
+  height: 86px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  background-color: #1a1f26;
+  padding: 10px;
+  margin-bottom: 14px;
+}
+
+.about-card h1 {
+  color: var(--accent-2);
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.rotating-font {
+  display: inline-block;
+  animation: rotatingFont 15s infinite;
+  font-size: 2.2rem;
+  line-height: 1;
+  vertical-align: baseline;
+  white-space: nowrap;
+  min-width: 8ch;
+  letter-spacing: 0.02em;
+}
+
+@keyframes rotatingFont {
+  0%,
+  19% {
+    font-family: "DepartureMono Nerd", monospace;
+  }
+  20%,
+  39% {
+    font-family: "Gohu Nerd", monospace;
+  }
+  40%,
+  59% {
+    font-family: "Meslo Nerd", monospace;
+  }
+  60%,
+  79% {
+    font-family: "ProggyClean Nerd", monospace;
+  }
+  80%,
+  100% {
+    font-family: "Terminess Nerd", monospace;
+  }
+}
+
+.about-card p {
+  color: var(--text);
+  margin-bottom: 10px;
+  line-height: 1.6;
+  max-width: 50ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-lead {
+  font-size: 1.05rem;
+}
+
+.about-body {
+  color: var(--muted);
+}
+
+.about-cta {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.about-cta:hover,
+.about-cta:focus {
+  color: #0b0f1a;
+  background-color: var(--accent);
+  border-color: var(--accent);
+  text-decoration: none;
+}
+
+.error-hero {
+  min-height: calc(100vh - 160px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+
+.error-card {
+  background-color: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 28px;
+  border-radius: 12px;
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.error-code {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.error-body {
+  color: var(--muted);
+  margin-bottom: 14px;
+  max-width: 46ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.badge {
+  padding: 8px !important;
+  border-radius: 7px !important;
+  display: inline-block;
+}
+
+.badge-Easy {
+  background-color: var(--success);
+  border: 1px solid #2bd47b !important;
+  color: #e8fff1;
+}
+
+.badge-Medium {
+  background-color: var(--warning);
+  border: 1px solid #f1c40f !important;
+  color: #fff6d6;
+}
+
+.badge-Hard {
+  background-color: var(--danger);
+  border: 1px solid #ff7a7a !important;
+  color: #ffecec;
+}
+
+.badge-ctf {
+  background-color: rgb(0, 15, 149);
+  border: 1px solid rgb(0, 89, 255) !important;
+  color: #ffecec;
+}
+
+.badge-tech {
+  background-color: #0f4c5c;
+  border: 1px solid #2bb3c0 !important;
+  color: #e6fbff;
+}
+
+.badge-random {
+  background-color: #5b2a86;
+  border: 1px solid #9b59b6 !important;
+  color: #f5e9ff;
+}
+
+.badge-tag {
+  background-color: #2b313a;
+  border: 1px solid var(--border) !important;
+  color: var(--text);
+}
+
+.markdown-body {
+  background-color: var(--surface-2);
+  width: 70%;
+  margin: auto;
+  padding: 20px;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  margin-bottom: 24px;
+}
+
+.markdown-body h1 {
+  color: #6e93f0;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.3em;
+  border-bottom: none;
+}
+
+.markdown-body h2 {
+  color: #7f9fe0;
+  margin-top: 2rem;
+  border-bottom: none;
+}
+
+.markdown-body h3 {
+  color: #8fa6d6;
+  border-bottom: none;
+}
+
+.markdown-body a {
+  color: #7ab8ff;
+  text-decoration: underline;
+}
+
+.markdown-body code {
+  background-color: #1a1f26;
+  padding: 0.2em 0.4em;
+  border-radius: 6px;
+  color: #9ef0b0;
+}
+
+.markdown-body p {
+  color: var(--text);
+}
+
+.markdown-body hr {
+  display: none;
+}
+
+.markdown-body blockquote {
+  border-left: 4px solid var(--border);
+  padding-left: 1em;
+  color: var(--muted);
+}

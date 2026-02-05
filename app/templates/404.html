@@ -1,0 +1,14 @@
+{% extends "default.html" %}
+
+{% block content %}
+<main class="error-hero">
+  <div class="error-card">
+    <p class="error-code">404</p>
+    <h1>Page not found</h1>
+    <p class="error-body">
+      The page you are looking for does not exist or was moved.
+    </p>
+    <a class="about-cta" href="{{ url_for('blog') }}">Go back to Blog</a>
+  </div>
+</main>
+{% endblock %}

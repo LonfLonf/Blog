@@ -1,0 +1,29 @@
+{% extends "default.html" %}
+{% block content %}
+{% for f in files %}
+{% set filename = f.file %}
+{% set cat = f.category %}
+<div class="flex-grow-1 container py-4 content">
+  <h1><a href="{{ url_for('show_post', name=filename.split('.')[0], categories=cat) }}">{{ filename.split('-')[0] }}-{{ filename.split('-')[1].split('.')[0] }}</a></h1>
+  {% if cat == "writeups" %}
+  {% set parts = filename.split('-') %}
+  {% set level = parts[2] | replace(".MD", "") | trim %}
+  <span class="badge badge-ctf">Capture The Flag</span>
+  <span class="badge badge-{{ level }}">{{ level }}</span>
+  {% elif cat == "tech" %}
+  {% set parts = filename.split('-') %}
+  {% set topic = parts[0] | trim %}
+  {% set level = parts[2] | replace(".MD", "") | trim %}
+  <span class="badge badge-tech">Tech</span>
+  <span class="badge badge-tag">{{ topic }}</span>
+  <span class="badge badge-{{ level }}">{{ level }}</span>
+  {% elif cat == "randomstuff" %}
+  {% set parts = filename.split('-') %}
+  {% set tag = parts[0] | trim %}
+  <span class="badge badge-random">Random Stuff</span>
+  <span class="badge badge-tag">{{ tag }}</span>
+  {% else %}
+  {% endif %}
+</div>
+{% endfor %}
+{% endblock %}

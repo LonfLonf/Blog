@@ -1,0 +1,10 @@
+<!doctype html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+
+{% extends "default.html" %} {% block content %}
+
+<article class="markdown-body">
+  {{ markdown | safe }}
+</article>
+
+{% endblock %}
