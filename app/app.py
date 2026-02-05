@@ -93,7 +93,8 @@ def show_post(name=None, categories=None):
             logging.info(f" Post name: {name}")
             logging.info(f" Post name split by '_': {tree}")
             try: 
-                post_path = os.path.join(POSTS_DIR, categories.lower(), f"{name}.MD")
+                post_path = os.path.join(POSTS_DIR, f"{name}.MD")
+                logging.info(f" Constructed post path: {post_path}")
                 html = markdown.markdown(open(post_path).read(), extensions=['fenced_code', 'codehilite', 'tables', 'toc'])
             except FileNotFoundError:
                 logging.error(f" FileNotFoundError: The file '{name}' in category '{categories}' was not found.")
