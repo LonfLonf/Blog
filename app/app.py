@@ -13,6 +13,16 @@ POSTS_DIR = os.path.join(BASE_DIR, "post")
 SITE_NAME = "LonfLonf Blog"
 SITE_DESCRIPTION = "Write-ups, CTFs, tech notes, and random thoughts from LonfLonf."
 
+@app.before_request
+def log_request():
+    app.logger.info(
+        f"IP={request.remote_addr} "
+        f"METHOD={request.method} "
+        f"PATH={request.path} "
+        f"UA={request.headers.get('User-Agent')}"
+    )
+
+
 def get_category_by_name(name):
     if re.search('WriteUp', name, re.IGNORECASE):
         return 'writeups'
@@ -38,6 +48,7 @@ def collect_posts_for_sitemap():
 # Basic Routes
 @app.route('/')
 def home(user=None):
+    
     return render_template('aboutme.html', user=user)
 
 @app.route('/blog')
