@@ -9,7 +9,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 app.wsgi_app = ProxyFix(
     app.wsgi_app,
-    x_for=1,
+    x_for=2,
     x_proto=1,
     x_host=1,
     x_port=1
