@@ -3,9 +3,17 @@ import logging
 import markdown
 import re
 from flask import Flask, abort, request, render_template
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
+app.wsgi_app = ProxyFix(
+    app.wsgi_app,
+    x_for=1,
+    x_proto=1,
+    x_host=1,
+    x_port=1
+)
 
 BASE_DIR = os.path.dirname(__file__)
 POSTS_DIR = os.path.join(BASE_DIR, "post")
