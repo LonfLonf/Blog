@@ -2,6 +2,8 @@ import os
 import logging
 import markdown
 import re
+import json
+from datetime import datetime
 from flask import Flask, abort, request, render_template
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -21,6 +23,12 @@ POSTS_DIR = os.path.join(BASE_DIR, "post")
 SITE_NAME = "LonfLonf Blog"
 SITE_DESCRIPTION = "Write-ups, CTFs, tech notes, and random thoughts from LonfLonf."
 
+CATEGORIES = {
+    "writeups": "Write-ups",
+    "tech": "Tech Notes",
+    "randomstuff": "Random Stuff"
+}
+
 @app.before_request
 def log_request():
     app.logger.info(
@@ -29,15 +37,6 @@ def log_request():
         f"PATH={request.path} "
         f"UA={request.headers.get('User-Agent')}"
     )
-
-
-def get_category_by_name(name):
-    if re.search('WriteUp', name, re.IGNORECASE):
-        return 'writeups'
-    elif re.search('Tech', name, re.IGNORECASE):
-        return 'tech'
-    else:
-        return 'randomstuff'
 
 def collect_posts_for_sitemap():
     posts = []
@@ -63,53 +62,51 @@ def home(user=None):
 @app.route('/blog/search/<name>')
 @app.route('/blog/<categories>')
 def blog(categories=None, name=None):
-    activeCategories = []
-    posts = []
+    posts2 = []
+    configFile = os.path.join(BASE_DIR, "config.json")
+    logging.info(f" Configuration file path: {configFile}")
     
-    for root, dirs, files in os.walk(POSTS_DIR):
-        for dir in dirs:
-            activeCategories.append(dir)
-        for file in files:
-            rel_path = os.path.relpath(os.path.join(root, file), POSTS_DIR)
-            parts = rel_path.split(os.sep)
-            if len(parts) > 1:
-                category = parts[0].lower()
-            else:
-                category = get_category_by_name(file)
-            posts.append({"file": file, "category": category})
+    with open(configFile, encoding='utf-8') as f:
+        postsJson = json.load(f)
+    logging.info(f" Loaded configuration: {postsJson}")
     
-    logging.info(f" Active Categories: {activeCategories}")
-    logging.info(f" Active Files: {[p['file'] for p in posts]}")
+    for post in postsJson:
+        logging.info(f" Post from config: {post['name']}")
+        post['fileName'] = post['file']
+        post['file'] = os.path.join(POSTS_DIR, post['file']) 
+        # Format date for display (dateAtCreation expected in ISO 8601)
+        date_str = post.get('dateAtCreation') or post.get('date_at_creation') or post.get('date')
+        if date_str:
+            try:
+                dt = datetime.fromisoformat(date_str.replace('Z', '+00:00'))
+                post['date'] = dt.strftime('%b %d, %Y')
+                post['date_iso'] = dt.isoformat()
+            except Exception:
+                post['date'] = date_str
+        else:
+            post['date'] = ''
+
+        posts2.append(post)
         
     if categories == None and name == None:
-        return render_template('blog.html', files=posts, categories='all')
+        return render_template('blog.html', files=posts2, categories='all')
     elif categories != None and name == None:
-            category = re.search('writeups|tech|randomstuff', categories, re.IGNORECASE)
+            category = re.search('Writeups|Tech|Randomstuff', categories, re.IGNORECASE)
+            logging.info(f" Requested category: {categories}, Matched category: {category.group() if category else 'None'}")
             
             if category is None:
                 abort(404)
-                
-            logging.info(f" Requested category: {categories}, Matched category: {category.group()}")
-            
-            nameRe = None
-            if category.group().lower() == 'writeups':
-                nameRe = re.compile(r'writeup', re.IGNORECASE)
-            elif category.group().lower() == 'tech':
-                nameRe = re.compile(r'tech', re.IGNORECASE)
-            elif category.group().lower() == 'randomstuff':
-                nameRe = re.compile(r'^(?!.*(?:writeup|tech)).*$', re.IGNORECASE)
-            
-            logging.info(f" Regex for filtering files in category '{categories}'")
             
             files = []
-            for p in posts:
-                if p["category"] == category.group().lower() and nameRe.search(p["file"]):
+            for p in posts2:
+                if p["category"] == category.group():
                     files.append(p)
-            logging.info(f" Files in category '{nameRe}': {files}")
+            logging.info(f" Files in category '{category.group()}': {files}")
+            
             return render_template('blog.html', files=files, categories=categories)
     elif categories == None and name != None:
             outputFiles = []
-            for p in posts:
+            for p in posts2:
                 if re.search(re.escape(name), p["file"], re.IGNORECASE):
                     outputFiles.append(p)
             logging.info(f" Search results for '{name}': {outputFiles}")     
@@ -129,9 +126,11 @@ def show_post(name=None, categories=None):
             logging.info(f" Post name: {name}")
             logging.info(f" Post name split by '_': {tree}")
             try: 
-                post_path = os.path.join(POSTS_DIR, f"{name}.MD")
+                post_path = os.path.join(POSTS_DIR, f"{name}")
                 logging.info(f" Constructed post path: {post_path}")
-                html = markdown.markdown(open(post_path).read(), extensions=['fenced_code', 'codehilite', 'tables', 'toc'])
+                with open(post_path, encoding='utf-8') as pf:
+                    content = pf.read()
+                html = markdown.markdown(content, extensions=['fenced_code', 'codehilite', 'tables', 'toc'])
             except FileNotFoundError:
                 logging.error(f" FileNotFoundError: The file '{name}' in category '{categories}' was not found.")
                 abort(404)
@@ -175,4 +174,4 @@ def sitemap():
     return xml, 200, {"Content-Type": "application/xml; charset=utf-8"}
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()

@@ -1,0 +1,16 @@
+[
+    {
+        "name": "AOC Introdução",
+        "file": "aoc1.md",
+        "dateAtCreation": "2026-02-10T12:00:00Z",
+        "Tags": ["AOC", "Faculdade"],
+        "category": "Tech"
+   } ,
+   {
+        "name": "WriteUp Devvortex",
+        "file": "devvortex.md",
+        "dateAtCreation": "2026-02-08T12:00:00Z",
+        "Tags": ["Easy", "Hack The Box"],
+        "category": "Writeups"
+   }
+]

@@ -445,9 +445,90 @@
 }
 
 .badge-tag {
-  background-color: #2b313a;
-  border: 1px solid var(--border) !important;
-  color: var(--text);
+  background-color: rgba(99,102,241,0.12); /* vivid indigo, light */
+  border: 1px solid rgba(79,70,229,0.28) !important; /* darker indigo border */
+  color: #ffffff; /* white text */
+}
+
+.badge-tag-tech {
+  background-color: rgba(20,184,166,0.12); /* vivid teal, light */
+  border: 1px solid rgba(6,182,212,0.28) !important; /* darker teal border */
+  color: #ffffff; /* white text */
+}
+
+.badge-category {
+  background-color: #334155;
+  border: 1px solid #475569 !important;
+  color: var(--accent-2);
+}
+
+
+.badge-category-writeups {
+  background-color: #0b3dff; 
+  border: 1px solid #2b6bff !important;
+  color: #ffffff;
+}
+
+.badge-category-tech {
+  background-color: #0f6b3a; 
+  border: 1px solid #2bd47b !important;
+  color: #e8fff1;
+}
+
+.badge-category-randomstuff {
+  background-color: #5b2a86; 
+  border: 1px solid #9b59b6 !important;
+  color: #f5e9ff;
+}
+
+/* Post meta (date + category) */
+.post-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.post-date {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background-color: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+/* Header layout: title on left, date on right */
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.post-title h1 {
+  margin: 0 0 6px 0;
+  font-size: 1.6rem; /* increased for better readability */
+}
+
+@media (max-width: 720px) {
+  .post-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .post-date {
+    align-self: flex-start;
+  }
+}
+
+/* Tags row styling: align badges under title, wrap when needed */
+.post-tags {
+  margin-top: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 .markdown-body {

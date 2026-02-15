@@ -1,29 +1,43 @@
 {% extends "default.html" %}
 {% block content %}
 {% for f in files %}
-{% set filename = f.file %}
-{% set cat = f.category %}
-<div class="flex-grow-1 container py-4 content">
-  <h1><a href="{{ url_for('show_post', name=filename.split('.')[0], categories=cat) }}">{{ filename.split('-')[0] }}-{{ filename.split('-')[1].split('.')[0] }}</a></h1>
-  {% if cat == "writeups" %}
-  {% set parts = filename.split('-') %}
-  {% set level = parts[2] | replace(".MD", "") | trim %}
-  <span class="badge badge-ctf">Capture The Flag</span>
-  <span class="badge badge-{{ level }}">{{ level }}</span>
-  {% elif cat == "tech" %}
-  {% set parts = filename.split('-') %}
-  {% set topic = parts[0] | trim %}
-  {% set level = parts[2] | replace(".MD", "") | trim %}
-  <span class="badge badge-tech">Tech</span>
-  <span class="badge badge-tag">{{ topic }}</span>
-  <span class="badge badge-{{ level }}">{{ level }}</span>
-  {% elif cat == "randomstuff" %}
-  {% set parts = filename.split('-') %}
-  {% set tag = parts[0] | trim %}
-  <span class="badge badge-random">Random Stuff</span>
-  <span class="badge badge-tag">{{ tag }}</span>
-  {% else %}
+  {% set filename = f.fileName if f.fileName is defined else (f.file if f.file is defined else '') %}
+  {% set tags = f.Tags if f.Tags is defined else (f.tags if f.tags is defined else []) %}
+  {% if tags is string %}
+    {% set tags = [tags] %}
   {% endif %}
-</div>
+  {% set cat = f.category if f.category is defined else ('') %}
+
+  <div class="flex-grow-1 container py-4 content">
+    <div class="post-header">
+      <div class="post-title">
+        <h1>
+          <a href="{{ url_for('show_post', name=filename, categories=cat) }}">{{ f.name if f.name is defined else (f.title if f.title is defined else filename) }}</a>
+        </h1>
+      </div>
+
+      {% if f.date %}
+          <div class="post-date">{{ f.date }}</div>
+        {% endif %}
+      </div>
+
+      {# Tags row: restore aligned badges under the header #}
+      <div class="post-tags">
+        {# Category first, then tags, all inline #}
+        {% if cat %}
+          <span class="badge badge-category badge-category-{{ cat|lower }}">{{ cat }}</span>
+        {% endif %}
+        {% for t in tags %}
+          {% set t_l = t|lower %}
+          {% if t in ["Easy", "Medium", "Hard"] %}
+            <span class="badge badge-{{ t }}">{{ t }}</span>
+          {% elif t_l == 'tech' %}
+            <span class="badge badge-tag badge-tag-tech">{{ t }}</span>
+          {% else %}
+            <span class="badge badge-tag">{{ t }}</span>
+          {% endif %}
+        {% endfor %}
+      </div>
+  </div>
 {% endfor %}
 {% endblock %}
