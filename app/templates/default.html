@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="pt-BR">
   <head>
     {% block head %}
     <meta charset="utf-8" />
@@ -9,6 +9,9 @@
       name="description"
       content="{{ page_description or 'Write-ups, CTFs, tech notes, and random thoughts from LonfLonf.' }}"
     />
+    <meta name="robots" content="index,follow" />
+    <meta property="og:image" content="{{ page_image or url_for('static', filename='images/hacker.png') }}" />
+    <meta name="twitter:image" content="{{ page_image or url_for('static', filename='images/hacker.png') }}" />
     <link rel="canonical" href="{{ request.url }}" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="{{ page_title or 'LonfLonf Blog' }}" />
@@ -24,6 +27,18 @@
       name="twitter:description"
       content="{{ page_description or 'Write-ups, CTFs, tech notes, and random thoughts from LonfLonf.' }}"
     />
+    {% if is_article %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "{{ page_title }}",
+      "description": "{{ page_description }}",
+      "url": "{{ request.url }}"{% if article_date %},
+      "datePublished": "{{ article_date }}"{% endif %}
+    }
+    </script>
+    {% endif %}
     <link
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"

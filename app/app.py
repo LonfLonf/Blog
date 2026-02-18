@@ -52,6 +52,47 @@ def collect_posts_for_sitemap():
                 posts.append((category, name))
     return posts
 
+
+@app.context_processor
+def inject_site_defaults():
+    base_url = request.url_root.rstrip('/') if request else ''
+    return {
+        'site_name': SITE_NAME,
+        'site_description': SITE_DESCRIPTION,
+        'base_url': base_url
+    }
+
+
+def _extract_title_and_description_from_markdown(content: str):
+    title = None
+    description = None
+    for line in content.splitlines():
+        ln = line.strip()
+        if not ln:
+            continue
+        if ln.startswith('#') and title is None:
+            title = ln.lstrip('#').strip()
+            continue
+        if not ln.startswith('#') and description is None:
+            description = re.sub(r"\[([^\]]+)\]\([^\)]+\)", r"\1", ln)
+            description = re.sub(r'[`*_>]', '', description)
+            description = description[:160]
+            break
+    return title, description
+
+
+def _sanitize_post_html(html: str):
+    def repl(match):
+        tag = match.group(0)
+        if 'alt=' not in tag:
+            tag = tag.replace('<img', '<img alt=""', 1)
+        if 'loading=' not in tag:
+            tag = tag.replace('<img', '<img loading="lazy"', 1)
+        return tag
+
+    html = re.sub(r'<img[^>]*>', repl, html)
+    return html
+
 # Basic Routes
 @app.route('/')
 def home(user=None):
@@ -88,8 +129,11 @@ def blog(categories=None, name=None):
 
         posts2.append(post)
         
+    page_title = "Blog - " + SITE_NAME
+    page_description = SITE_DESCRIPTION
+
     if categories == None and name == None:
-        return render_template('blog.html', files=posts2, categories='all')
+        return render_template('blog.html', files=posts2, categories='all', page_title=page_title, page_description=page_description)
     elif categories != None and name == None:
             category = re.search('Writeups|Tech|Randomstuff', categories, re.IGNORECASE)
             logging.info(f" Requested category: {categories}, Matched category: {category.group() if category else 'None'}")
@@ -103,14 +147,14 @@ def blog(categories=None, name=None):
                     files.append(p)
             logging.info(f" Files in category '{category.group()}': {files}")
             
-            return render_template('blog.html', files=files, categories=categories)
+            return render_template('blog.html', files=files, categories=categories, page_title=f"{categories} - {SITE_NAME}", page_description=f"Posts in {categories} on {SITE_NAME}")
     elif categories == None and name != None:
             outputFiles = []
             for p in posts2:
                 if re.search(re.escape(name), p["file"], re.IGNORECASE):
                     outputFiles.append(p)
             logging.info(f" Search results for '{name}': {outputFiles}")     
-            return render_template('blog.html', name=name, files=outputFiles, categories='all')
+            return render_template('blog.html', name=name, files=outputFiles, categories='all', page_title=f"Search: {name} - {SITE_NAME}", page_description=f"Search results for {name} on {SITE_NAME}")
     else:
         abort(404)
 
@@ -135,7 +179,26 @@ def show_post(name=None, categories=None):
                 logging.error(f" FileNotFoundError: The file '{name}' in category '{categories}' was not found.")
                 abort(404)
 
-    return render_template('post.html', markdown=html)
+            md_title, md_desc = _extract_title_and_description_from_markdown(content)
+
+            post_meta = {}
+            try:
+                with open(os.path.join(BASE_DIR, 'config.json'), encoding='utf-8') as cf:
+                    cfg = json.load(cf)
+                    for p in cfg:
+                        if 'file' in p and p['file'] == name:
+                            post_meta = p
+                            break
+            except Exception:
+                post_meta = {}
+
+            page_title = md_title or post_meta.get('name') or SITE_NAME
+            page_description = md_desc or post_meta.get('summary') or SITE_DESCRIPTION
+
+            # sanitize images and add lazy-loading/alt
+            html = _sanitize_post_html(html)
+
+    return render_template('post.html', markdown=html, page_title=page_title, page_description=page_description, is_article=True, article_date=post_meta.get('dateAtCreation') if post_meta else None)
 
 @app.errorhandler(404)
 def page_not_found(error):
